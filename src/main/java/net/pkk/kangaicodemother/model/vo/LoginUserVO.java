@@ -1,9 +1,13 @@
 package net.pkk.kangaicodemother.model.vo;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author 林子康
@@ -26,6 +30,11 @@ public class LoginUserVO implements Serializable {
      * 用户昵称
      */
     private String userName;
+
+    /**
+     * 用户邮箱
+     */
+    private String email;
 
     /**
      * 用户头像
@@ -53,4 +62,26 @@ public class LoginUserVO implements Serializable {
     private LocalDateTime updateTime;
 
     private static final long serialVersionUID = 1L;
+
+    public static Map<String, Object> voToMap(LoginUserVO loginUserVO) {
+        if (loginUserVO == null) {
+            return null;
+        }
+        Map<String, Object> userMap = BeanUtil.beanToMap(loginUserVO, new HashMap<>(),
+                // 属性拷贝选项，创建并忽略对象中为空的属性，设置 变量名 / 值  -> key / value
+                CopyOptions.create().setIgnoreNullValue(true).setFieldValueEditor((fieldName, fieldValue) -> {
+                    if (fieldValue == null) {
+                        return null;
+                    }
+                    return fieldValue.toString();
+                }));
+        return userMap;
+    }
+
+    public static LoginUserVO mapToLoginUser(Map<String, Object> userMap) {
+        if (userMap.isEmpty()) {
+            return null;
+        }
+        return BeanUtil.copyProperties(userMap, LoginUserVO.class);
+    }
 }

@@ -3,6 +3,8 @@ package net.pkk.kangaicodemother.service;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.service.IService;
 import jakarta.servlet.http.HttpServletRequest;
+import net.pkk.kangaicodemother.common.BaseResponse;
+import net.pkk.kangaicodemother.model.dto.UserLoginByEmailAndCodeRequest;
 import net.pkk.kangaicodemother.model.dto.UserQueryRequest;
 import net.pkk.kangaicodemother.model.entity.User;
 import net.pkk.kangaicodemother.model.vo.LoginUserVO;
@@ -91,4 +93,20 @@ public interface UserService extends IService<User> {
      * @return 加密后的密码
      */
     String getEncryptPassword(String userPassword);
+
+    /**
+     * 发送短信验证码给对应用户
+     * @param phone
+     * @return
+     */
+    BaseResponse<String> sendCodeToUser(String phone);
+
+    /**
+     * 手机号码和验证码登录
+     *
+     * @param userLoginByPhoneAndCode
+     * @return
+     */
+    LoginUserVO loginByEmailAndVerifyCode(UserLoginByEmailAndCodeRequest userLoginByPhoneAndCode, HttpServletRequest request);
+
 }

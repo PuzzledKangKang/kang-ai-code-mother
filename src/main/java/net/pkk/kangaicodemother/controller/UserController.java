@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.mybatisflex.core.paginate.Page;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import net.pkk.kangaicodemother.annotation.AuthCheck;
 import net.pkk.kangaicodemother.common.BaseResponse;
 import net.pkk.kangaicodemother.common.DeleteRequest;
@@ -27,6 +28,7 @@ import java.util.List;
  * @author 林子康
  * @since 1.0.1
  */
+@Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -66,6 +68,24 @@ public class UserController {
         return ResultUtils.success(loginUserVO);
     }
 
+    /**
+     * 发送验证码
+     *
+     * @param phone
+     * @return
+     */
+    @PostMapping("/code")
+    public BaseResponse<String> sendVerifyCode(@RequestParam("phone") String phone) {
+        return userService.sendCodeToUser(phone);
+    }
+
+    @PostMapping("/login/phone")
+    public BaseResponse<LoginUserVO> loginByEmailAndVerifyCode(@RequestBody UserLoginByEmailAndCodeRequest userLoginByEmailAndCode, HttpServletRequest request) {
+        log.info("邮箱号码：{}", userLoginByEmailAndCode.getEmail());
+        LoginUserVO loginUserVO = userService.loginByEmailAndVerifyCode(userLoginByEmailAndCode, request);
+        log.info("邮箱登录用户信息：{}", loginUserVO);
+        return ResultUtils.success(loginUserVO);
+    }
     /**
      * 获取用户登录信息
      *
