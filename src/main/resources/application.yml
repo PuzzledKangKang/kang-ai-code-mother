@@ -7,6 +7,8 @@ spring:
     url: jdbc:mysql://localhost:3306/kang_ai_code_mother
     username: root
     password: root
+  profiles:
+    active: local
   # java Mail
   mail:
     host: smtp.qq.com
@@ -34,6 +36,25 @@ springdoc:
     - group: 'default'
       paths-to-match: '/**'
       packages-to-scan: net.pkk.kangaicodemother.controller
+# AI
+langchain4j:
+  open-ai:
+    chat-model:
+      base-url: https://api.deepseek.com
+      api-key: <Your API Key>
+      model-name: deepseek-chat
+      max-tokens: 8192  # 请求的最大令牌数
+      strict-json-schema: true  # 严格模式
+      response-format: json_object # 响应格式
+      log-requests: true # 请求日志
+      log-responses: true # 响应日志
+    streaming-chat-model:
+      base-url: https://api.deepseek.com
+      api-key: <Your API Key>
+      model-name: deepseek-chat
+      max-tokens: 8192  # 请求的最大令牌数
+      log-requests: true # 请求日志
+      log-responses: true # 响应日志
 # knife4j
 knife4j:
   enable: true
