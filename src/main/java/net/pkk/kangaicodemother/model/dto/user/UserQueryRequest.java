@@ -1,4 +1,4 @@
-package net.pkk.kangaicodemother.model.dto;
+package net.pkk.kangaicodemother.model.dto.user;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
