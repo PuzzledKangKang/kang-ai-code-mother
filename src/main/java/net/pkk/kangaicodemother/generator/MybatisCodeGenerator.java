@@ -14,7 +14,7 @@ import java.util.Map;
 public class MybatisCodeGenerator {
 
     // 要生成的表名
-    private static final String[] TABLE_NAME = {"tab_user"};
+    private static final String[] TABLE_NAME = {"tab_app"};
 
     public static void main(String[] args) {
         // 获取数据源信息
@@ -46,7 +46,7 @@ public class MybatisCodeGenerator {
 
         // 设置根包
         globalConfig.getPackageConfig()
-                .setBasePackage("net.pkk.kangaicodemother.genera teresult");
+                .setBasePackage("net.pkk.kangaicodemother.generateresult");
 
         // 设置表前缀和只生成哪些表，setGenerateTable 未配置时，生成所有表
         globalConfig.getStrategyConfig()
@@ -73,8 +73,7 @@ public class MybatisCodeGenerator {
 
         // 设置生成的注释，比如生成的时间和作者，避免后续多余的代码改动
         globalConfig.getJavadocConfig()
-                .setAuthor("林子康")
-                .setSince("1.0.1");
+                .setAuthor("林子康");
 
         return globalConfig;
     }
