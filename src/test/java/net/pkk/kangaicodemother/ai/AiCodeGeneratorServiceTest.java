@@ -23,7 +23,7 @@ class AiCodeGeneratorServiceTest {
 
     @Test
     void generateMultiFileCode() {
-        MultiFileCodeResult result = aiCodeGeneratorService.generateMultiFileCode("做个博客网站，不超过 50 行");
+        MultiFileCodeResult result = aiCodeGeneratorService.generateMultiFileCode("假设你是一名资深前端程序员，请帮我做个博客网站，不超过 100 行代码，要求界面美观，用户体验感好！");
         Assertions.assertNotNull(result);
     }
 }

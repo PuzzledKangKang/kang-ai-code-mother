@@ -16,10 +16,7 @@ import net.pkk.kangaicodemother.constant.UserConstant;
 import net.pkk.kangaicodemother.exception.BusinessException;
 import net.pkk.kangaicodemother.exception.ErrorCode;
 import net.pkk.kangaicodemother.exception.ThrowUtils;
-import net.pkk.kangaicodemother.model.dto.app.AppAddRequest;
-import net.pkk.kangaicodemother.model.dto.app.AppAdminUpdateRequest;
-import net.pkk.kangaicodemother.model.dto.app.AppQueryRequest;
-import net.pkk.kangaicodemother.model.dto.app.AppUpdateRequest;
+import net.pkk.kangaicodemother.model.dto.app.*;
 import net.pkk.kangaicodemother.model.entity.App;
 import net.pkk.kangaicodemother.model.entity.User;
 import net.pkk.kangaicodemother.model.enums.CodeGenTypeEnum;
@@ -52,6 +49,14 @@ public class AppController {
     @Resource
     private UserService userService;
 
+    /**
+     * 通过对话框聊天生成应用代码
+     *
+     * @param appId   应用 ID
+     * @param message 用户输入的提示词
+     * @param request 请求
+     * @return 流式代码返回结果包装了 ServerSentEvent 主要为了解决空格丢失问题
+     */
     @GetMapping(value = "/chat/gen/code", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<ServerSentEvent<String>> chatToGenCode(@RequestParam Long appId,
                                                        @RequestParam String message,
@@ -79,6 +84,26 @@ public class AppController {
                                 .build()
                 ));
     }
+
+    /**
+     * 应用部署
+     *
+     * @param appDeployRequest 部署请求
+     * @param request          请求
+     * @return 部署 URL
+     */
+    @PostMapping("/deploy")
+    public BaseResponse<String> deployApp(@RequestBody AppDeployRequest appDeployRequest, HttpServletRequest request) {
+        ThrowUtils.throwIf(appDeployRequest == null, ErrorCode.PARAMS_ERROR);
+        Long appId = appDeployRequest.getAppId();
+        ThrowUtils.throwIf(appId == null || appId <= 0, ErrorCode.PARAMS_ERROR, "应用 ID 不能为空");
+        // 获取当前登录用户
+        User loginUser = userService.getLoginUser(request);
+        // 调用服务部署应用
+        String deployUrl = appService.deployApp(appId, loginUser);
+        return ResultUtils.success(deployUrl);
+    }
+
 
     /**
      * 创建应用
