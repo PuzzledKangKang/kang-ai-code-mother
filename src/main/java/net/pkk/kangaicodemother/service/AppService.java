@@ -7,8 +7,10 @@ import net.pkk.kangaicodemother.exception.BusinessException;
 import net.pkk.kangaicodemother.exception.ErrorCode;
 import net.pkk.kangaicodemother.model.dto.app.AppQueryRequest;
 import net.pkk.kangaicodemother.model.entity.App;
+import net.pkk.kangaicodemother.model.entity.User;
 import net.pkk.kangaicodemother.model.vo.AppVO;
 import net.pkk.kangaicodemother.model.vo.UserVO;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
@@ -19,6 +21,16 @@ import java.util.List;
  * @since 2025-08-11
  */
 public interface AppService extends IService<App> {
+
+    /**
+     * 通过对话框聊天生成应用代码
+     *
+     * @param appId 应用 ID
+     * @param message 提示词
+     * @param loginUser 登录用户
+     * @return 流式代码返回结果
+     */
+    Flux<String> chatToGenCode(Long appId, String message, User loginUser);
 
     /**
      * 获取应用封装类
