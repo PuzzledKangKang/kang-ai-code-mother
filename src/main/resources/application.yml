@@ -1,6 +1,11 @@
 spring:
   application:
     name: kang-ai-code-mother-backend
+  # Session 配置
+  session:
+    store-type: redis
+    # session 过期时间，单位为秒，30天
+    timeout: 2592000
   # mysql
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -38,6 +43,10 @@ server:
   port: 8123
   servlet:
     context-path: /api
+    # cookie 30 天过期
+    session:
+      cookie:
+        max-age: 2592000
 # springdoc-openapi
 springdoc:
   group-configs:
