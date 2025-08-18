@@ -16,7 +16,7 @@ import java.time.Duration;
  */
 @Data
 @Configuration
-@ConfigurationProperties(prefix = "lanchain4j.open-ai.chat-model")
+@ConfigurationProperties(prefix = "langchain4j.open-ai.chat-model")
 public class ReasoningStreamingChatModelConfig {
 
     /**
