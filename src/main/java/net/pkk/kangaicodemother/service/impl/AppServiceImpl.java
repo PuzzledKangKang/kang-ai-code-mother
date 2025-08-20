@@ -27,6 +27,7 @@ import net.pkk.kangaicodemother.model.vo.AppVO;
 import net.pkk.kangaicodemother.model.vo.UserVO;
 import net.pkk.kangaicodemother.service.AppService;
 import net.pkk.kangaicodemother.service.ChatHistoryService;
+import net.pkk.kangaicodemother.service.ScreenshotService;
 import net.pkk.kangaicodemother.service.UserService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -64,6 +65,9 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
 
     @Resource
     private VueProjectBuilder vueProjectBuilder;
+
+    @Resource
+    private ScreenshotService screenshotService;
 
     @Override
     public Flux<String> chatToGenCode(Long appId, String message, User loginUser) {
@@ -146,7 +150,32 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
         boolean updateResult = this.updateById(updateApp);
         ThrowUtils.throwIf(!updateResult, ErrorCode.OPERATION_ERROR, "更新应用部署信息失败");
         // 10. 返回可访问的 URL 地址
-        return String.format("%s/%s", AppConstant.CODE_DEPLOY_HOST, deployKey);
+        String appDeployUrl = String.format("%s/%s", AppConstant.CODE_DEPLOY_HOST, deployKey);
+        // 11. 异步执行截图并且更新目录封面
+        generateAppScreenshotAsync(appId, appDeployUrl);
+        return appDeployUrl;
+    }
+
+    /**
+     * 异步生成应用截图并更新封面
+     *
+     * @param appId  应用ID
+     * @param appUrl 应用访问URL
+     */
+    @Override
+    public void generateAppScreenshotAsync(Long appId, String appUrl) {
+        // 使用虚拟线程并执行
+        Thread.startVirtualThread(() -> {
+            // 调用截图服务生成截图并上传
+            String screenshotUrl = screenshotService.generateAndUpload(appUrl);
+            // 更新数据库的封面
+            App appCoverUpdateEntity = App.builder()
+                    .id(appId)
+                    .cover(screenshotUrl)
+                    .build();
+            boolean updated = this.updateById(appCoverUpdateEntity);
+            ThrowUtils.throwIf(!updated, ErrorCode.OPERATION_ERROR, "更新应用封面字段失败");
+        });
     }
 
     @Override

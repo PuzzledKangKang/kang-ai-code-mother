@@ -1,15 +1,11 @@
 package net.pkk.kangaicodemother.service;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.service.IService;
-import net.pkk.kangaicodemother.exception.BusinessException;
-import net.pkk.kangaicodemother.exception.ErrorCode;
 import net.pkk.kangaicodemother.model.dto.app.AppQueryRequest;
 import net.pkk.kangaicodemother.model.entity.App;
 import net.pkk.kangaicodemother.model.entity.User;
 import net.pkk.kangaicodemother.model.vo.AppVO;
-import net.pkk.kangaicodemother.model.vo.UserVO;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
@@ -40,6 +36,14 @@ public interface AppService extends IService<App> {
      * @return 可访问的部署地址
      */
     String deployApp(Long appId, User loginUser);
+
+    /**
+     * 异步生成应用截图并更新封面
+     *
+     * @param appId  应用ID
+     * @param appUrl 应用访问URL
+     */
+    void generateAppScreenshotAsync(Long appId, String appUrl);
 
     /**
      * 获取应用封装类
