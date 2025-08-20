@@ -2,6 +2,7 @@ package net.pkk.kangaicodemother.service;
 
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.service.IService;
+import net.pkk.kangaicodemother.model.dto.app.AppAddRequest;
 import net.pkk.kangaicodemother.model.dto.app.AppQueryRequest;
 import net.pkk.kangaicodemother.model.entity.App;
 import net.pkk.kangaicodemother.model.entity.User;
@@ -21,12 +22,21 @@ public interface AppService extends IService<App> {
     /**
      * 通过对话框聊天生成应用代码
      *
-     * @param appId 应用 ID
-     * @param message 提示词
+     * @param appId     应用 ID
+     * @param message   提示词
      * @param loginUser 登录用户
      * @return 流式代码返回结果
      */
     Flux<String> chatToGenCode(Long appId, String message, User loginUser);
+
+    /**
+     * 创建应用
+     *
+     * @param appAddRequest 应用创建请求
+     * @param loginUser     登录用户
+     * @return 应用 ID
+     */
+    Long createApp(AppAddRequest appAddRequest, User loginUser);
 
     /**
      * 应用部署
@@ -47,6 +57,7 @@ public interface AppService extends IService<App> {
 
     /**
      * 获取应用封装类
+     *
      * @param app 应用
      * @return 应用封装类
      */
