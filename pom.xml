@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>net.pkk</groupId>
-    <artifactId>kang-ai-code-mother</artifactId>
+    <artifactId>kang-ai-code-mother-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>kang-ai-code-mother</name>
     <description>kang-ai-code-mother</description>
