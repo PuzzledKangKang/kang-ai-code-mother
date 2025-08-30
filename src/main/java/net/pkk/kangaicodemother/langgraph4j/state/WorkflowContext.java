@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.pkk.kangaicodemother.langgraph4j.model.ImageResource;
+import net.pkk.kangaicodemother.langgraph4j.model.QualityResult;
 import net.pkk.kangaicodemother.model.enums.CodeGenTypeEnum;
 import org.bsc.langgraph4j.prebuilt.MessagesState;
 
@@ -66,6 +67,11 @@ public class WorkflowContext implements Serializable {
      * 构建成功的目录
      */
     private String buildResultDir;
+
+    /**
+     * 质量检查结果
+     */
+    private QualityResult qualityResult;
 
     /**
      * 错误信息
