@@ -21,6 +21,8 @@ import net.pkk.kangaicodemother.model.dto.app.*;
 import net.pkk.kangaicodemother.model.entity.App;
 import net.pkk.kangaicodemother.model.entity.User;
 import net.pkk.kangaicodemother.model.vo.AppVO;
+import net.pkk.kangaicodemother.ratelimiter.annotation.RateLimit;
+import net.pkk.kangaicodemother.ratelimiter.enums.RateLimitType;
 import net.pkk.kangaicodemother.service.AppService;
 import net.pkk.kangaicodemother.service.ProjectDownloadService;
 import net.pkk.kangaicodemother.service.UserService;
@@ -64,6 +66,7 @@ public class AppController {
      * @return 流式代码返回结果包装了 ServerSentEvent 主要为了解决空格丢失问题
      */
     @GetMapping(value = "/chat/gen/code", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @RateLimit(limitType = RateLimitType.USER, rate = 5, rateInterval = 60, message = "AI 对话请求过于频繁，请稍后再试")
     public Flux<ServerSentEvent<String>> chatToGenCode(@RequestParam Long appId,
                                                        @RequestParam String message,
                                                        HttpServletRequest request) {
