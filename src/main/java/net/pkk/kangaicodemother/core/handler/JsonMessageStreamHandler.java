@@ -1,6 +1,5 @@
 package net.pkk.kangaicodemother.core.handler;
 
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -9,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.pkk.kangaicodemother.ai.model.message.*;
 import net.pkk.kangaicodemother.ai.tools.BaseTool;
 import net.pkk.kangaicodemother.ai.tools.ToolManager;
-import net.pkk.kangaicodemother.constant.AppConstant;
 import net.pkk.kangaicodemother.core.builder.VueProjectBuilder;
 import net.pkk.kangaicodemother.model.entity.User;
 import net.pkk.kangaicodemother.model.enums.ChatHistoryMessageTypeEnum;
@@ -27,9 +25,6 @@ import java.util.Set;
 @Slf4j
 @Component
 public class JsonMessageStreamHandler {
-
-    @Resource
-    private VueProjectBuilder vueProjectBuilder;
 
     @Resource
     private ToolManager toolManager;
@@ -61,8 +56,6 @@ public class JsonMessageStreamHandler {
                     // 流式响应完成后，添加 AI 消息到对话历史
                     String aiResponse = chatHistoryStringBuilder.toString();
                     chatHistoryService.addChatMessage(appId, aiResponse, ChatHistoryMessageTypeEnum.AI.getValue(), loginUser.getId());
-                    String projectPath = AppConstant.CODE_OUTPUT_ROOT_DIR + "/vue_project_" + appId;
-                    vueProjectBuilder.buildProjectAsync(projectPath);
                 })
                 .doOnError(error -> {
                     // 如果AI回复失败，也要记录错误消息
