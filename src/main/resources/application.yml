@@ -64,6 +64,7 @@ langchain4j:
 #      response-format: json_object # 响应格式
       log-requests: true # 请求日志
       log-responses: true # 响应日志
+      max-retries: 3
     streaming-chat-model:
       base-url: https://api.deepseek.com
       api-key: <Your API Key>
